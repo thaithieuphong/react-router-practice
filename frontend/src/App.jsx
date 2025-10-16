@@ -1,13 +1,15 @@
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 
 import Home from './pages/Home'
-import Events, { LoadEvents } from './pages/Events'
-import EventDetail, { LoadEventDetail, DeleteEventAction } from './pages/EventDetail'
-import NewEvent, { AddNewEventAction } from './pages/NewEvent'
+import Events, { Loader } from './pages/Events'
+import EventDetail, { LoaderEventDetail, DeleteEventAction } from './pages/EventDetail'
+import NewEvent from './pages/NewEvent'
 import EditEvent from './pages/EditEvent'
 import Layout from './pages/Layout'
 import EventRootLayout from './pages/EventRootLayout'
 import ErrorPage from './pages/Error'
+import { AddNewEventAction as manipulateEventAction } from './components/EventForm'
+import Newsletter, { action as newsletterAction } from './pages/Newsletter'
 
 const router = createBrowserRouter(
     [
@@ -27,13 +29,13 @@ const router = createBrowserRouter(
                         {
                             index: true,
                             element: <Events />,
-                            loader: LoadEvents,
+                            loader: Loader,
                             errorElement: <ErrorPage />
                         },
                         {
                             path: ':id',
                             id: 'event-detail',
-                            loader: LoadEventDetail,
+                            loader: LoaderEventDetail,
                             children: [
                                 {
                                     index: true,
@@ -42,17 +44,23 @@ const router = createBrowserRouter(
                                 },
                                 {
                                     path: 'edit',
-                                    element: <EditEvent />
+                                    element: <EditEvent />,
+                                    action: manipulateEventAction
                                 },
                             ],
                         },
                         {
                             path: 'new',
                             element: <NewEvent />,
-                            action: AddNewEventAction
+                            action: manipulateEventAction
                         },
                     ]
                 },
+                {
+                    path: 'newsletter',
+                    element: <Newsletter />,
+                    action: newsletterAction
+                }
             ]
         },
     ]
